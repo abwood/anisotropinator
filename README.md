@@ -3,7 +3,7 @@
 Simple utility created for us to evaluate encoding anisotropy texture data in 2 channels, with xy representing a 2D vector and strength encoded as the magnitude of the vector.
 
 > **Warning**
-> There appears to be a bug in either my rendering of anisotropy, or this conversion tool itself based on the results shown below. This is a live document.
+> This is a live document, research is all a work in progress.
 
 # Comparisons
 
