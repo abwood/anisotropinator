@@ -2,7 +2,8 @@
 
 Simple utility created for us to evaluate encoding anisotropy texture data in 2 channels, with xy representing a 2D vector and strength encoded as the magnitude of the vector.
 
-
+> **Warning**
+> There appears to be a bug in either my rendering of anisotropy, or this conversion tool itself based on the results shown below. This is a live document.
 
 # Comparisons
 
@@ -40,6 +41,17 @@ The following are preliminary renderings in my own renderer to test out the 3 ch
 | :--------------------------------------------------: | :--------------------------------------------: |
 |     ![](images/anisotropyBarnLamp.3channel.png)      |     ![](images/anisotropyBarnLamp.2D.png)      |
 | ![](images/anisotropyGradientRoughness.3channel.png) | ![](images/anisotropyGradientRoughness.2D.png) |
+
+## AnisotropyGradientRoughness Breakdown
+
+|    Output     |                      3 channel                       |                   2 channel                    |
+| :-----------: | :--------------------------------------------------: | :--------------------------------------------: |
+|    normals    |     ![](images/agr_normals.3channel.png)      |     ![](images/agr_normals.2D.png)      |
+|     dirx      | ![](images/agr_dirx.3channel.png) | ![](images/agr_dirx.2D.png) |
+|     diry      | ![](images/agr_diry.3channel.png) | ![](images/agr_diry.2D.png) |
+|      str      | ![](images/agr_str.3channel.png) | ![](images/agr_str.2D.png) |
+| anisotropicT  | ![](images/agr_anisotropicT.3channel.png) | ![](images/agr_anisotropicT.2D.png) |
+| specular_brdf | ![](images/agr_specular_brdf.3channel.png) | ![](images/agr_specular_brdf.2D.png) |
 
 # Implementation
 
