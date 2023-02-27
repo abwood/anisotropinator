@@ -71,3 +71,38 @@ Decoding the 2 channel anisotropy goes as follows:
     vec3 anisotropicB = normalize(cross(n, anisotropicT));
     specularBrdf = specular_brdf_anisotropic(alphaRoughness, anisotropy, n, v, l, h, anisotropicT, anisotropicB);
 ```
+
+BRDF implementation:
+
+```GLSL
+// GGX Distribution Anisotropic
+// https://blog.selfshadow.com/publications/s2012-shading-course/burley/s2012_pbs_disney_brdf_notes_v3.pdf Addenda
+float D_GGX_anisotropic(float NdotH, float TdotH, float BdotH, float anisotropy, float at, float ab)
+{
+    float a2 = at * ab;
+    vec3 f = vec3(ab * TdotH, at * BdotH, a2 * NdotH);
+    float w2 = a2 / dot(f, f);
+    return a2 * w2 * w2 / c_Pi;
+}
+
+// GGX Mask/Shadowing Anisotropic
+// Heitz http://jcgt.org/published/0003/02/03/paper.pdf
+float V_GGX_anisotropic(float NdotL, float NdotV, float BdotV, float TdotV, float TdotL, float BdotL, float at, float ab)
+{
+    float GGXV = NdotL * length(vec3(at * TdotV, ab * BdotV, NdotV));
+    float GGXL = NdotV * length(vec3(at * TdotL, ab * BdotL, NdotL));
+    float v = 0.5 / (GGXV + GGXL);
+    return clamp(v, 0.0, 1.0);
+}
+
+float specular_brdf_anisotropic(float alphaRoughness, float anisotropy, vec3 n, vec3 v, vec3 l, vec3 h, vec3 t, vec3 b)
+{
+    float at = max(alphaRoughness * (1.0 + anisotropy), 0.00001);
+    float ab = max(alphaRoughness * (1.0 - anisotropy), 0.00001);
+
+    float V = V_GGX_anisotropic(dot(n, l), dot(n, v), dot(b, v), dot(t, v), dot(t, l), dot(b, l), at, ab);
+    float D = D_GGX_anisotropic(clampdotEps(n, h), dot(t, h), dot(b, h), anisotropy, at, ab);
+
+    return V * D;
+}
+```
