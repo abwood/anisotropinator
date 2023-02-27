@@ -3,6 +3,7 @@
 #include <format>
 #include <vector>
 #include <numbers>
+#include <algorithm>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb/stb_image.h"
