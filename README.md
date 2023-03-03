@@ -60,13 +60,14 @@ Decoding the 2 channel anisotropy goes as follows:
 ```GLSL
     vec2 anisotropySample = texture(u_AnisotropyTexture, texCoords).rg;
     vec3 direction = vec3(anisotropySample.rg * 2.0 - vec2(1.0), 0.0);
-    if (dot(direction, direction) == 0.0)
+    float anisotropyStrength = length(direction.rg) * pbrInputs.anisotropy.b;
+    if (dot(anisotropySample, anisotropySample) == 0.0)
     {
         direction.rg = pbrInputs.anisotropy.rg;
+        anisotropyStrength = pbrInputs.anisotropy.b;
     }
-    float anisotropyStrength = length(direction.rg);
     direction = normalize(direction);
-    anisotropy = clamp(anisotropyStrength * pbrInputs.anisotropy.b, 0.0, 1.0);
+    anisotropy = clamp(anisotropyStrength, 0.0, 1.0);
     anisotropicT = normalize(getTBN() * direction);
     vec3 anisotropicB = normalize(cross(n, anisotropicT));
     specularBrdf = specular_brdf_anisotropic(alphaRoughness, anisotropy, n, v, l, h, anisotropicT, anisotropicB);
